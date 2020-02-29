@@ -1,25 +1,21 @@
 import React from "react"
 
-import uwuu from "../../../sounds/floof/uwuu.ogg"
-import bear from "../../../sounds/bear/bear.ogg"
+import sounds from "../../sounds/"
+
+const getRandomSoundFromBoard = board => {
+  const keys = Object.keys(board)
+  const randomKey = keys[Math.floor(Math.random() * keys.length)]
+  return board[randomKey]
+}
 
 export default ({ onChange }) => (
   <ul>
-    <li>
-      <p>Floof:</p>
-      <ul>
-        <li>
-          <button onClick={() => onChange(uwuu)}>uwuu</button>
-        </li>
-      </ul>
-    </li>
-    <li>
-      <p>Bear:</p>
-      <ul>
-        <li>
-          <button onClick={() => onChange(bear)}>bear</button>
-        </li>
-      </ul>
-    </li>
+    {Object.entries(sounds).map(([name, board]) => (
+      <li key={name}>
+        <button onClick={() => onChange(getRandomSoundFromBoard(board))}>
+          {name}
+        </button>
+      </li>
+    ))}
   </ul>
 )
