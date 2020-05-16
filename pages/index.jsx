@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react"
 import Player from "../components/Player"
 import Files from "../components/Files"
 import Login from "../components/Login"
+import Profile from "../components/Profile"
 
 export default () => {
   const [sound, setSound] = useState(null)
@@ -25,6 +26,7 @@ export default () => {
   return (
     <>
       <Login />
+      <Profile />
       <hr />
       <Player sound={sound} volume={volume} onEnded={() => setSound(null)} />
       <Files onChange={setSound} />

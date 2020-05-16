@@ -12,51 +12,37 @@ const getOrSetSession = () => {
   return uuid
 }
 
+const generateAuthEndpoint = state => {
+  const url = "https://api.twitch.tv/kraken/oauth2/authorize"
+  const params = [
+    ["client_id", process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID],
+    ["redirect_uri", process.env.NEXT_PUBLIC_TWITCH_REDIRECT_URI],
+    ["response_type", "code"],
+    ["scope", "openid"],
+    [
+      "claims",
+      JSON.stringify({ userinfo: { picture: null, preferred_username: null } })
+    ],
+    ["state", state]
+  ]
+
+  return `${url}?${params.map(([key, val]) => `${key}=${val}`).join("&")}`
+}
+
 export default () => {
-  const [uniqueId, setUniqueId] = useState(null)
-  const [response, setResponse] = useState(null)
+  const [session, setSession] = useState(null)
 
   useEffect(() => {
-    setUniqueId(getOrSetSession())
-  }, [])
-
-  useEffect(() => {
-    let cancelled = false
-
-    const request = async () => {
-      const res = await window.fetch("/api/hello")
-      const text = await res.text()
-
-      if (!cancelled) {
-        setResponse(text)
-      }
-    }
-
-    request()
-
-    return () => (cancelled = true)
+    setSession(getOrSetSession())
   }, [])
 
   return (
-    <>
-      <p>{uniqueId}</p>
-      <p>{response ? response : null}</p>
-    </>
+    <p>
+      {session ? (
+        <a href={generateAuthEndpoint(session)}>Login</a>
+      ) : (
+        <span>Loading…</span>
+      )}
+    </p>
   )
 }
-
-// GET https://id.twitch.tv/oauth2/authorize ?client_id=<your client ID> &redirect_uri=<your registered redirect URI> &response_type=code &scope=<space-separated list of scopes> &claims=<JSON object specifying requested claims>
-
-// sessionStorage.twitchOAuthState = nonce(15)
-// var url =
-//   "https://api.twitch.tv/kraken/oauth2/authorize" +
-//   "?response_type=token" +
-//   "&client_id=" +
-//   clientId +
-//   "&redirect_uri=" +
-//   redirectURI +
-//   "&state=" +
-//   sessionStorage.twitchOAuthState +
-//   "&scope=" +
-//   scope
-// return url
