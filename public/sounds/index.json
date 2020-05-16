@@ -1,0 +1,31 @@
+{
+  "bear": {
+    "default": "/sounds/bear/bear.ogg",
+    "more_bear_grumble": "/sounds/bear/more_bear_grumble.ogg",
+    "more_bear_growl": "/sounds/bear/more_bear_growl.ogg",
+    "close_bear_uwuu": "/sounds/bear/close_bear_uwuu.ogg",
+    "bear_uwuu": "/sounds/bear/bear_uwuu.ogg",
+    "bear_uwuu_2": "/sounds/bear/bear_uwuu_2.ogg",
+    "bear_rawr": "/sounds/bear/bear_rawr.ogg",
+    "bear_grumble": "/sounds/bear/bear_grumble.ogg",
+    "bear_growls": "/sounds/bear/bear_growls.ogg",
+    "bear_growl": "/sounds/bear/bear_growl.ogg",
+    "aurora_bear_growl": "/sounds/bear/aurora_bear_growl.ogg",
+    "angi_loud_bear": "/sounds/bear/angi_loud_bear.ogg",
+    "angi_bear": "/sounds/bear/angi_bear.ogg",
+    "angi_bear_growl": "/sounds/bear/angi_bear_growl.ogg"
+  },
+  "floof": {
+    "default": "/sounds/floof/uwuu.ogg",
+    "angi_woof": "/sounds/floof/angi_woof.ogg",
+    "awoof": "/sounds/floof/awoof.ogg",
+    "close_uwuu": "/sounds/floof/close_uwuu.ogg",
+    "distant_uwuu": "/sounds/floof/distant_uwuu.ogg",
+    "floof_growl": "/sounds/floof/floof_growl.ogg",
+    "more_distant_uwuu": "/sounds/floof/more_distant_uwuu.ogg",
+    "more_uwuu": "/sounds/floof/more_uwuu.ogg"
+  },
+  "wannabe": {
+    "default": "/sounds/wannabe/wannabe.mp3"
+  }
+}

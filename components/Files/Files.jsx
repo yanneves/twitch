@@ -1,6 +1,6 @@
 import React from "react"
 
-import sounds from "../../sounds/"
+import sounds from "../../public/sounds/index.json"
 
 const getRandomSoundFromBoard = board => {
   const keys = Object.keys(board)

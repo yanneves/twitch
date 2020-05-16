@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 
-import Player from "./components/Player"
-import Files from "./components/Files"
+import Player from "../components/Player"
+import Files from "../components/Files"
 
 export default () => {
   const [sound, setSound] = useState(null)
