@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react"
 
 export default () => {
   const [token, setToken] = useState(null)
-  const [profile, setProfile] = useState(null)
   const [errors, setErrors] = useState([])
 
   useEffect(() => {
@@ -33,11 +32,21 @@ export default () => {
         const res = await window.fetch(`/api/auth?token=${code}`)
         json = await res.json()
       } catch {
-        return setErrors([...errors, "Failed to authenticate with our server"])
+        if (!cancelled) {
+          return setErrors([
+            ...errors,
+            "Failed to authenticate with our server",
+          ])
+        }
       }
 
       if (!cancelled) {
-        const { access_token: token } = json
+        const { error, ...token } = json
+
+        if (error) {
+          return setErrors([...errors, `${error}`])
+        }
+
         setToken(token)
       }
     }
@@ -47,46 +56,10 @@ export default () => {
     return () => (cancelled = true)
   }, [])
 
-  useEffect(() => {
-    if (!token) return
-
-    let cancelled = false
-
-    const request = async () => {
-      const res = await window.fetch("https://id.twitch.tv/oauth2/userinfo", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      const json = await res.json()
-
-      if (!cancelled) {
-        setProfile(json)
-      }
-    }
-
-    request()
-
-    return () => (cancelled = true)
-  }, [token])
-
   return (
     <>
-      {errors.length ? (
-        <div>
-          {errors.map(error => (
-            <p key={error}>{error}</p>
-          ))}
-        </div>
-      ) : null}
-      {profile ? (
-        <div>
-          <figure>
-            <img src={profile.picture} />
-            <figcaption>{profile.preferred_username}</figcaption>
-          </figure>
-        </div>
-      ) : null}
+      {errors.length ? errors.map((error) => <p key={error}>{error}</p>) : null}
+      {token ? <pre>{JSON.stringify(token, null, 2)}</pre> : null}
     </>
   )
 }
