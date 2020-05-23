@@ -40,7 +40,7 @@ export default () => {
           return setErrors([...errors, `${error}`])
         }
 
-        setOverlays(data)
+        setOverlays([data])
       }
     }
 

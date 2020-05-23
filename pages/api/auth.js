@@ -2,7 +2,7 @@ import fetch from "node-fetch"
 
 import createErrorHandler from "../../lib/createErrorHandler"
 import verify from "../../lib/jwkVerify"
-import { createOverlay } from "../../lib/db"
+import { createOrUpdateOverlay } from "../../lib/db"
 
 // Twitch API OIDC Authorization Code Flow
 // https://dev.twitch.tv/docs/authentication/getting-tokens-oidc#oidc-authorization-code-flow
@@ -70,7 +70,7 @@ export default async (req, res) => {
   res.end(
     JSON.stringify({
       status: res.statusCode,
-      data: createOverlay(login),
+      data: createOrUpdateOverlay(login),
     })
   )
 }

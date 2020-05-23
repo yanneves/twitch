@@ -10,14 +10,12 @@ export default ({ data }) => {
     const request = async () => {
       let json
 
-      const {
-        twitch: { access_token },
-      } = data
+      const { twitch_access_token } = data
 
       try {
         const res = await window.fetch(`https://id.twitch.tv/oauth2/userinfo`, {
           headers: {
-            Authorization: `Bearer ${access_token}`,
+            Authorization: `Bearer ${twitch_access_token}`,
           },
         })
         json = await res.json()
