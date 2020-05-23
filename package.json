@@ -21,6 +21,6 @@
     "react-audio-player": "^0.13.0",
     "react-dom": "^16.13.0",
     "react-hot-loader": "^4.12.21",
-    "uuid": "^8.1.0"
+    "shortid": "^2.2.15"
   }
 }

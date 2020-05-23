@@ -2,6 +2,7 @@ import fetch from "node-fetch"
 
 import createErrorHandler from "../../lib/createErrorHandler"
 import verify from "../../lib/jwkVerify"
+import { createOverlay } from "../../lib/db"
 
 // Twitch API OIDC Authorization Code Flow
 // https://dev.twitch.tv/docs/authentication/getting-tokens-oidc#oidc-authorization-code-flow
@@ -25,7 +26,7 @@ const generateServerAuthEndpoint = (token) => {
 }
 
 const getLogin = async (req, { badRequest, serverError }) => {
-  let data
+  let data, decoded
 
   const { token } = req.query
 
@@ -47,13 +48,15 @@ const getLogin = async (req, { badRequest, serverError }) => {
   }
 
   try {
-    await verify(data.id_token)
+    decoded = await verify(data.id_token)
   } catch (e) {
     console.error(e)
     return serverError("Failed to verify integrity of Twitch JSONWebKey")
   }
 
-  return data
+  const { preferred_username } = decoded
+
+  return { username: preferred_username.toLowerCase(), ...data }
 }
 
 export default async (req, res) => {
@@ -68,7 +71,7 @@ export default async (req, res) => {
   res.end(
     JSON.stringify({
       status: res.statusCode,
-      ...login,
+      data: createOverlay(login),
     })
   )
 }

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react"
+import Link from "next/link"
 
 export default () => {
-  const [token, setToken] = useState(null)
+  const [overlays, setOverlays] = useState([])
   const [errors, setErrors] = useState([])
 
   useEffect(() => {
@@ -15,12 +16,6 @@ export default () => {
       const [key, val] = param.split("=")
       return { ...memo, [key]: val }
     }, {})
-
-    const { state: session } = params
-
-    if (session !== window.sessionStorage.getItem("uuid")) {
-      return setErrors([...errors, "Login failed, session mismatch"])
-    }
 
     const request = async () => {
       let json
@@ -41,13 +36,13 @@ export default () => {
       }
 
       if (!cancelled) {
-        const { error, ...token } = json
+        const { error, data } = json
 
         if (error) {
           return setErrors([...errors, `${error}`])
         }
 
-        setToken(token)
+        setOverlays(data)
       }
     }
 
@@ -59,7 +54,15 @@ export default () => {
   return (
     <>
       {errors.length ? errors.map((error) => <p key={error}>{error}</p>) : null}
-      {token ? <pre>{JSON.stringify(token, null, 2)}</pre> : null}
+      <ul>
+        {overlays.map(({ key, user }) => (
+          <li key={key}>
+            <Link href={`/overlay/soundboard/${user}/${key}`}>
+              <a>{`/overlay/soundboard/${user}/${key}`}</a>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </>
   )
 }
