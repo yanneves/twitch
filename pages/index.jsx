@@ -1,11 +1,11 @@
 import React from "react"
 
 import Login from "../components/Login"
-import Profile from "../components/Profile"
+import Dashboard from "../components/Dashboard"
 
 export default () => (
   <>
     <Login />
-    <Profile />
+    <Dashboard />
   </>
 )

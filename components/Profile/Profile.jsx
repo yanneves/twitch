@@ -1,48 +1,35 @@
 import React, { useState, useEffect } from "react"
-import Link from "next/link"
 
-export default () => {
-  const [overlays, setOverlays] = useState([])
+export default ({ data }) => {
+  const [picture, setPicture] = useState(null)
   const [errors, setErrors] = useState([])
 
   useEffect(() => {
     let cancelled = false
 
-    const query = window.location.search.substr(1).split("&")
-
-    if (!query.length) return
-
-    const params = query.reduce((memo, param) => {
-      const [key, val] = param.split("=")
-      return { ...memo, [key]: val }
-    }, {})
-
     const request = async () => {
       let json
-      const { code } = params
 
-      if (!code) return
+      const {
+        twitch: { access_token },
+      } = data
 
       try {
-        const res = await window.fetch(`/api/auth?token=${code}`)
+        const res = await window.fetch(`https://id.twitch.tv/oauth2/userinfo`, {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        })
         json = await res.json()
       } catch {
         if (!cancelled) {
-          return setErrors([
-            ...errors,
-            "Failed to authenticate with our server",
-          ])
+          return setErrors([...errors, "Failed to fetch user info"])
         }
       }
 
       if (!cancelled) {
-        const { error, data } = json
-
-        if (error) {
-          return setErrors([...errors, `${error}`])
-        }
-
-        setOverlays(data)
+        const { picture } = json
+        setPicture(picture)
       }
     }
 
@@ -54,15 +41,10 @@ export default () => {
   return (
     <>
       {errors.length ? errors.map((error) => <p key={error}>{error}</p>) : null}
-      <ul>
-        {overlays.map(({ key, user }) => (
-          <li key={key}>
-            <Link href={`/overlay/soundboard/${user}/${key}`}>
-              <a>{`/overlay/soundboard/${user}/${key}`}</a>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <figure>
+        {picture ? <img src={picture} /> : null}
+        <figcaption>{data.user}</figcaption>
+      </figure>
     </>
   )
 }

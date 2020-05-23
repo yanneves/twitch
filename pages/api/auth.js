@@ -61,7 +61,6 @@ const getLogin = async (req, { badRequest, serverError }) => {
 
 export default async (req, res) => {
   const errorHandler = createErrorHandler(res)
-  // const { badRequest, serverError } = errorHandler
 
   res.setHeader("Content-Type", "application/json")
 
