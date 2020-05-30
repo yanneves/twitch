@@ -2,7 +2,7 @@ import fetch from "node-fetch"
 
 import createErrorHandler from "../../lib/createErrorHandler"
 import verify from "../../lib/jwkVerify"
-import { createOrUpdateOverlay } from "../../lib/db"
+import { createOrUpdateOverlay } from "../../lib/database"
 
 // Twitch API OIDC Authorization Code Flow
 // https://dev.twitch.tv/docs/authentication/getting-tokens-oidc#oidc-authorization-code-flow
@@ -31,7 +31,7 @@ const getLogin = async (req, { badRequest, serverError }) => {
   const { token } = req.query
 
   if (!token) {
-    return badRequest("Missing token in request")
+    throw badRequest("Missing token in request")
   }
 
   try {
@@ -40,18 +40,17 @@ const getLogin = async (req, { badRequest, serverError }) => {
     })
     data = await twitch.json()
   } catch {
-    return serverError("Failed to connect to Twitch")
+    throw serverError("Failed to connect to Twitch")
   }
 
   if (data.status >= 400) {
-    return serverError("Failed to authenticate with Twitch")
+    throw serverError("Failed to authenticate with Twitch")
   }
 
   try {
     decoded = await verify(data.id_token)
   } catch (e) {
-    console.error(e)
-    return serverError("Failed to verify integrity of Twitch JSONWebKey")
+    throw serverError("Failed to verify integrity of Twitch JSONWebKey")
   }
 
   const { preferred_username } = decoded
@@ -61,16 +60,24 @@ const getLogin = async (req, { badRequest, serverError }) => {
 
 export default async (req, res) => {
   const errorHandler = createErrorHandler(res)
+  const { serverError } = errorHandler
 
   res.setHeader("Content-Type", "application/json")
 
-  const login = await getLogin(req, errorHandler)
+  try {
+    const login = await getLogin(req, errorHandler)
+    const data = await createOrUpdateOverlay(login)
 
-  res.statusCode = 200
-  res.end(
-    JSON.stringify({
-      status: res.statusCode,
-      data: createOrUpdateOverlay(login),
-    })
-  )
+    res.statusCode = 200
+    res.end(
+      JSON.stringify({
+        status: res.statusCode,
+        data,
+      })
+    )
+  } catch (e) {
+    if (e?.handled) return
+
+    return serverError("Failed to authenticate and create overlay")
+  }
 }

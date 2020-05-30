@@ -1,5 +1,5 @@
 import createErrorHandler from "../../lib/createErrorHandler"
-import { readOverlay } from "../../lib/db"
+import { readOverlay } from "../../lib/database"
 
 export default async (req, res) => {
   const { badRequest, notFound } = createErrorHandler(res)
@@ -13,7 +13,7 @@ export default async (req, res) => {
     return badRequest("Missing 'user' in request")
   }
 
-  const overlay = readOverlay(key, user)
+  const overlay = await readOverlay(key, user)
 
   if (!overlay) {
     return notFound("Overlay does not exist")

@@ -1,0 +1,17 @@
+type Overlay @collection(name: "overlays") {
+  key: String!
+  user: String!
+  twitch: Twitch!
+}
+
+type Twitch @embedded {
+  access_token: String!
+  expires_in: Int!
+  refresh_token: String!
+  token_type: String!
+}
+
+type Query {
+  findOverlayByUser(user: String!): Overlay @resolver
+  findOverlayByUserKey(user: String!, key: String!): Overlay @resolver
+}
