@@ -65,6 +65,7 @@ export default () => {
     <>
       {errors.length ? errors.map((error) => <p key={error}>{error}</p>) : null}
       <Player sound={sound} onEnded={() => setSound(null)} />
+      {/* TODO: since <Redemptions /> doesn't render anything, this should instead live in application state middleware or a custom React hook */}
       {auth ? <Redemptions auth={auth} onChange={setSound} /> : null}
     </>
   )

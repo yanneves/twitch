@@ -66,8 +66,6 @@ const getRandomSoundFromBoard = (board) => {
 }
 
 export default ({ auth, onChange }) => {
-  const [messages, setMessages] = useState([])
-
   const onClick = () => {
     const redemption = message?.data?.redemption.reward.title
 
@@ -104,8 +102,6 @@ export default ({ auth, onChange }) => {
     })
 
     rws.addEventListener("message", (message) => {
-      setMessages([...messages, message.data])
-
       try {
         const data = JSON.parse(message.data)
 
@@ -132,5 +128,5 @@ export default ({ auth, onChange }) => {
     }
   }, [])
 
-  return <pre>{JSON.stringify(messages, null, 2)}</pre>
+  return null
 }
