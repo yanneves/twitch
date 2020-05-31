@@ -6,7 +6,7 @@ const generateAuthEndpoint = () => {
     ["client_id", process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID],
     ["redirect_uri", process.env.NEXT_PUBLIC_TWITCH_REDIRECT_URI],
     ["response_type", "code"],
-    ["scope", "openid"],
+    ["scope", "openid channel_read channel:read:redemptions"],
     [
       "claims",
       JSON.stringify({ userinfo: { picture: null, preferred_username: null } }),

@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react"
 import { useRouter } from "next/router"
-import Link from "next/link"
 
-import Profile from "../../../../components/Profile"
+import Redemptions from "../../../../components/Redemptions"
 import Player from "../../../../components/Player"
-import Files from "../../../../components/Files"
 
 export default () => {
   const [errors, setErrors] = useState([])
-  const [overlay, setOverlay] = useState(null)
+  const [auth, setAuth] = useState(null)
   const [sound, setSound] = useState(null)
 
   const router = useRouter()
@@ -20,25 +18,41 @@ export default () => {
     if (!user || !key) return
 
     const request = async () => {
-      let json
+      let overlay, channel
 
       try {
-        const res = await window.fetch(
+        const fetchOverlay = await window.fetch(
           `/api/getOverlay?user=${user}&key=${key}`
         )
-        json = await res.json()
+        overlay = await fetchOverlay.json()
+
+        const fetchChannel = await window.fetch(
+          "https://api.twitch.tv/kraken/channel",
+          {
+            headers: {
+              "Client-ID": process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID,
+              Accept: "application/vnd.twitchtv.v5+json",
+              Authorization: `OAuth ${overlay?.data.twitch.access_token}`,
+            },
+          }
+        )
+        const channelData = await fetchChannel.json()
+        channel = channelData?._id
       } catch {
         return setErrors([...errors, "Failed to fetch overlay data"])
       }
 
       if (!cancelled) {
-        const { error, data } = json
+        const { error, data } = overlay
 
         if (error) {
           return setErrors([...errors, error])
         }
 
-        setOverlay(data)
+        setAuth({
+          ...data?.twitch,
+          channel,
+        })
       }
     }
 
@@ -49,14 +63,9 @@ export default () => {
 
   return (
     <>
-      {overlay ? <Profile data={overlay} /> : null}
-      <Link href="/">
-        <a>Back home</a>
-      </Link>
-      <hr />
+      {errors.length ? errors.map((error) => <p key={error}>{error}</p>) : null}
       <Player sound={sound} onEnded={() => setSound(null)} />
-      {/* TODO: replace with channel points integration */}
-      <Files onChange={setSound} />
+      {auth ? <Redemptions auth={auth} onChange={setSound} /> : null}
     </>
   )
 }
