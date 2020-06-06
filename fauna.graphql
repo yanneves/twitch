@@ -5,8 +5,8 @@ type Overlay @collection(name: "overlays") {
 }
 
 type Twitch @embedded {
+  expires: Long!
   access_token: String!
-  expires_in: Int!
   refresh_token: String!
   token_type: String!
 }
