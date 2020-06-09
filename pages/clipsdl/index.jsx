@@ -100,13 +100,16 @@ export default () => {
   const [data, setData] = useState(null)
 
   useEffect(() => {
-    // Parses ?code= from url
+    // Parses #access_token= from url
     const { access_token } = Object.fromEntries(
       window.location.hash
         .substr(1)
         .split("&")
         .map((pair) => pair.split("="))
     )
+
+    // Remove hash after reading value
+    history.pushState("", document.title, window.location.pathname)
 
     setToken(access_token)
   }, [setToken])
