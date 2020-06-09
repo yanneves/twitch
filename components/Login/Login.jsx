@@ -19,7 +19,7 @@ const generateAuthEndpoint = () => {
 export default () => {
   return (
     <p>
-      <a href={generateAuthEndpoint()}>Login</a>
+      <a href={generateAuthEndpoint()}>Log in with Twitch</a>
     </p>
   )
 }
