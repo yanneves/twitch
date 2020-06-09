@@ -148,7 +148,6 @@ export default () => {
 
       if (!cancelled) {
         setData(clips?.data)
-        console.dir(clips?.pagination)
         setCursor(clips?.pagination?.cursor)
       }
     }
