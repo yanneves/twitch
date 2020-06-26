@@ -24,8 +24,5 @@
     "floof_growl": "/sounds/floof/floof_growl.ogg",
     "more_distant_uwuu": "/sounds/floof/more_distant_uwuu.ogg",
     "more_uwuu": "/sounds/floof/more_uwuu.ogg"
-  },
-  "wannabe": {
-    "default": "/sounds/wannabe/wannabe.mp3"
   }
 }

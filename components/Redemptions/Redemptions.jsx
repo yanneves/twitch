@@ -6,7 +6,6 @@ import sounds from "../../public/sounds/index.json"
 const mapping = {
   "🐻": "bear",
   "🐺": "floof",
-  "!wannabe": "wannabe",
 }
 
 const getRandomSoundFromBoard = (board) => {
