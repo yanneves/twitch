@@ -25,6 +25,12 @@
     "more_distant_uwuu": "/sounds/floof/more_distant_uwuu.ogg",
     "more_uwuu": "/sounds/floof/more_uwuu.ogg"
   },
+  "hydrate": {
+    "default": "/sounds/hydrate/water-pouring-tin.mp3",
+    "water-pouring-01": "/sounds/hydrate/water-pouring-01.mp3",
+    "water-pouring-02": "/sounds/hydrate/water-pouring-02.mp3",
+    "water-pouring-03": "/sounds/hydrate/water-pouring-03.mp3"
+  },
   "thisisbeans": {
     "default": "/sounds/thisisbeans/this_is_beans.mp3"
   }

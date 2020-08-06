@@ -14,11 +14,11 @@ When you log in, if successful, you'll see an overlay link. Load that overlay ur
 
 To enable channel points redemptions, add any of the following to your [custom channel points rewards][twitch-channel-points], ensuring the title matches exactly. Then, when chat redeems them, they'll play in your overlay.
 
-| Title    | Soundboard behaviour                                             |
-| -------- | ---------------------------------------------------------------- |
-| 🐺       | Plays a random "Wolf" sound from The Long Dark                   |
-| 🐻       | Plays a random "Bear" sound from The Long Dark                   |
-| !wannabe | Plays Wannabe by Spice Girls audio from the official music video |
+| Title    | Soundboard behaviour                                                                                   |
+| -------- | ------------------------------------------------------------------------------------------------------ |
+| 🐺       | Plays a random "Wolf" sound from The Long Dark                                                         |
+| 🐻       | Plays a random "Bear" sound from The Long Dark                                                         |
+| Hydrate! | Plays a random hydration / water pouring sound (credit [Badlands Sound][badlands-sound] via Soundsnap) |
 
 ## Installation
 
@@ -28,9 +28,7 @@ Then tokens are configured through environment variables, see [.env.example](./.
 
 MIT License © 2020 Yann アウネ Eves
 
-<!-- - The Long Dark Wolf (aka Floof) 2,500 points
-- The Long Dark Bear (aka Teddy) 25,000 points
-- Wannabe (by Spice Girls) 50,000 points -->
+<!-- Developer Resources -->
 
 [twitch-affiliates]: https://affiliate.twitch.tv/
 [twitch-channel-points]: https://help.twitch.tv/s/article/channel-points-guide
@@ -38,3 +36,7 @@ MIT License © 2020 Yann アウネ Eves
 [twitch-dev]: https://dev.twitch.tv/
 [vercel]: https://vercel.com/
 [fauna-db]: https://fauna.com/
+
+<!-- Sound Credits -->
+
+[badlands-sound]: https://www.soundsnap.com/user/529348/library
