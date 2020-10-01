@@ -35,9 +35,9 @@
     "default": "/sounds/thisisbeans/this_is_beans.mp3"
   },
   "yay": {
-    "default": "/sounds/yay/yay.flac"
+    "default": "/sounds/yay/yay.ogg"
   },
   "aah": {
-    "default": "/sounds/aah/aah.flac"
+    "default": "/sounds/aah/aah.ogg"
   }
 }
