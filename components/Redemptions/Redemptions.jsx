@@ -8,6 +8,8 @@ const mapping = {
   "🐺": "floof",
   "THIS IS BEANS": "thisisbeans",
   "Hydrate!": "hydrate",
+  "!yay": "yay",
+  "!AAAAAaaaaAAAAhhhh": "aah",
 }
 
 const getRandomSoundFromBoard = (board) => {
