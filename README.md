@@ -21,6 +21,7 @@ To enable channel points redemptions, add any of the following to your [custom c
 | Hydrate!           | Plays a random hydration / water pouring sound (credit [Badlands Sound][badlands-sound] via Soundsnap) |
 | !yay               | Plays !yay voice clip from [twitch.tv/bugglebean][bugglebean]                                          |
 | !AAAAAaaaaAAAAhhhh | Plays !AAAAAaaaaAAAAhhhh voice clip from [twitch.tv/bugglebean][bugglebean]                            |
+| monké              | Plays Cert utilising the word Monké in current year from [twitch.tv/certnotly123][certnotly123]        |
 
 ## Installation
 
@@ -46,3 +47,4 @@ MIT License © 2020 Yann アウネ Eves
 <!-- Streamers -->
 
 [bugglebean]: https://twitch.tv/bugglebean
+[certnotly123]: https://twitch.tv/certnotly123

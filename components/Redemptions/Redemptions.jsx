@@ -10,6 +10,7 @@ const mapping = {
   "Hydrate!": "hydrate",
   "!yay": "yay",
   "!AAAAAaaaaAAAAhhhh": "aah",
+  "monké": "monké",
 }
 
 const getRandomSoundFromBoard = (board) => {

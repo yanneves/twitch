@@ -39,5 +39,8 @@
   },
   "aah": {
     "default": "/sounds/aah/aah.ogg"
+  },
+  "monké": {
+    "default": "/sounds/monké/monké.mp3"
   }
 }
