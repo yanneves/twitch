@@ -17,7 +17,7 @@
     "jsonwebtoken": "^8.5.1",
     "jwk-to-pem": "^2.0.4",
     "nanoid": "^3.1.12",
-    "next": "^9.5.3",
+    "next": "^9.5.4",
     "node-fetch": "^2.6.1",
     "react": "^16.13.0",
     "react-audio-player": "^0.13.0",
