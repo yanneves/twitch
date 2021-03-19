@@ -60,7 +60,7 @@ const Dashboard = () => {
         {overlays.map(({ key, user }) => (
           <li key={key}>
             <Link href={`/overlay/soundboard/${user}/${key}`}>
-              {`/overlay/soundboard/${user}/${key}`}
+              {`${window.location.origin}/overlay/soundboard/${user}/${key}`}
             </Link>
           </li>
         ))}
