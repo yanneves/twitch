@@ -1,7 +1,7 @@
-import React from "react"
+import React from 'react'
 
-import Login from "../components/Login"
-import Dashboard from "../components/Dashboard"
+import Login from '../components/Login'
+import Dashboard from '../components/Dashboard'
 
 export default () => (
   <>

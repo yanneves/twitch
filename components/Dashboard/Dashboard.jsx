@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react"
-import Link from "next/link"
+import React, { useState, useEffect } from 'react'
+import Link from 'next/link'
 
-export default () => {
+const Dashboard = () => {
   const [overlays, setOverlays] = useState([])
   const [errors, setErrors] = useState([])
 
@@ -15,20 +15,20 @@ export default () => {
       const { code } = Object.fromEntries(
         window.location.search
           .substr(1)
-          .split("&")
-          .map((pair) => pair.split("="))
+          .split('&')
+          .map((pair) => pair.split('='))
       )
 
-      if (!code) return
+      if (!code) return null
 
       try {
         const res = await window.fetch(`/api/auth?token=${code}`)
         json = await res.json()
       } catch {
         if (!cancelled) {
-          return setErrors([
-            ...errors,
-            "Failed to authenticate with our server",
+          return setErrors((state) => [
+            ...state,
+            'Failed to authenticate with our server',
           ])
         }
       }
@@ -37,17 +37,21 @@ export default () => {
         const { error, data } = json
 
         if (error) {
-          return setErrors([...errors, `${error}`])
+          return setErrors((state) => [...state, `${error}`])
         }
 
         setOverlays([data])
       }
+
+      return null
     }
 
     request()
 
-    return () => (cancelled = true)
-  }, [])
+    return () => {
+      cancelled = true
+    }
+  }, [setOverlays, setErrors])
 
   return (
     <>
@@ -56,7 +60,7 @@ export default () => {
         {overlays.map(({ key, user }) => (
           <li key={key}>
             <Link href={`/overlay/soundboard/${user}/${key}`}>
-              <a>{`/overlay/soundboard/${user}/${key}`}</a>
+              {`/overlay/soundboard/${user}/${key}`}
             </Link>
           </li>
         ))}
@@ -64,3 +68,5 @@ export default () => {
     </>
   )
 }
+
+export default Dashboard

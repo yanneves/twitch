@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react"
-import { useRouter } from "next/router"
+import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 
-import Redemptions from "../../../../components/Redemptions"
-import Player from "../../../../components/Player"
+import Redemptions from '../../../../components/Redemptions'
+import Player from '../../../../components/Player'
 
-export default () => {
+const Overlay = () => {
   const [errors, setErrors] = useState([])
   const [auth, setAuth] = useState(null)
   const [sound, setSound] = useState(null)
@@ -15,38 +15,40 @@ export default () => {
   useEffect(() => {
     let cancelled = false
 
-    if (!user || !key) return
+    if (!user || !key) return undefined
 
     const request = async () => {
-      let overlay, channel
+      let overlay
+      let channel
 
       try {
-        const fetchOverlay = await window.fetch(
+        const fetchOverlay = await fetch(
           `/api/getOverlay?user=${user}&key=${key}`
         )
         overlay = await fetchOverlay.json()
 
-        const fetchChannel = await window.fetch(
-          "https://api.twitch.tv/kraken/channel",
+        const fetchChannel = await fetch(
+          'https://api.twitch.tv/kraken/channel',
           {
             headers: {
-              "Client-ID": process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID,
-              Accept: "application/vnd.twitchtv.v5+json",
+              'Client-ID': process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID,
+              Accept: 'application/vnd.twitchtv.v5+json',
               Authorization: `OAuth ${overlay?.data.twitch.access_token}`,
             },
           }
         )
         const channelData = await fetchChannel.json()
+        // eslint-disable-next-line no-underscore-dangle
         channel = channelData?._id
       } catch {
-        return setErrors([...errors, "Failed to fetch overlay data"])
+        return setErrors((state) => [...state, 'Failed to fetch overlay data'])
       }
 
       if (!cancelled) {
         const { error, data } = overlay
 
         if (error) {
-          return setErrors([...errors, error])
+          return setErrors((state) => [...state, error])
         }
 
         setAuth({
@@ -54,12 +56,16 @@ export default () => {
           channel,
         })
       }
+
+      return null
     }
 
     request()
 
-    return () => (cancelled = true)
-  }, [user, key])
+    return () => {
+      cancelled = true
+    }
+  }, [user, key, setAuth, setErrors])
 
   return (
     <>
@@ -70,3 +76,5 @@ export default () => {
     </>
   )
 }
+
+export default Overlay

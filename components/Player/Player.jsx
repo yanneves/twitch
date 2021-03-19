@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react"
-import ReactAudioPlayer from "react-audio-player"
+import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
+import ReactAudioPlayer from 'react-audio-player'
 
-export default ({ sound, onEnded }) => {
+const Player = ({ sound, onEnded }) => {
   const [volume, setVolume] = useState(1)
 
   useEffect(() => {
@@ -9,8 +10,8 @@ export default ({ sound, onEnded }) => {
     const { volume: userVolume } = Object.fromEntries(
       window.location.search
         .substr(1)
-        .split("&")
-        .map((pair) => pair.split("="))
+        .split('&')
+        .map((pair) => pair.split('='))
     )
 
     if (userVolume) {
@@ -22,3 +23,15 @@ export default ({ sound, onEnded }) => {
     <ReactAudioPlayer src={sound} volume={volume} onEnded={onEnded} autoPlay />
   ) : null
 }
+
+Player.propTypes = {
+  sound: PropTypes.string,
+  onEnded: PropTypes.func,
+}
+
+Player.defaultProps = {
+  sound: null,
+  onEnded: null,
+}
+
+export default Player

@@ -1,0 +1,21 @@
+name: lint
+
+on: [push, pull_request]
+
+jobs:
+  npx-eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Read .nvmrc
+        id: nvmrc
+        shell: bash
+        run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ steps.nvmrc.outputs.NODE_VERSION }}
+      - run: npm i -g yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn eslint . --ext .js,.jsx
+        env:
+          CI: true

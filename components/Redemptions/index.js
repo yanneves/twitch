@@ -1,1 +1,1 @@
-export { default } from "./Redemptions"
+export { default } from './Redemptions'

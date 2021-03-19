@@ -1,18 +1,21 @@
-import React, { useState, useEffect, useCallback } from "react"
+import React, { useState, useEffect, useCallback } from 'react'
+import PropTypes from 'prop-types'
+
+import 'tachyons'
 
 const generateAuthEndpoint = () => {
-  const url = "https://api.twitch.tv/kraken/oauth2/authorize"
+  const url = 'https://api.twitch.tv/kraken/oauth2/authorize'
   const params = [
-    ["client_id", process.env.NEXT_PUBLIC_CLIPS_TWITCH_CLIENT_ID],
-    ["redirect_uri", process.env.NEXT_PUBLIC_CLIPS_TWITCH_REDIRECT_URI],
-    ["response_type", "token"],
-    ["scope", ""],
+    ['client_id', process.env.NEXT_PUBLIC_CLIPS_TWITCH_CLIENT_ID],
+    ['redirect_uri', process.env.NEXT_PUBLIC_CLIPS_TWITCH_REDIRECT_URI],
+    ['response_type', 'token'],
+    ['scope', ''],
   ]
 
-  return `${url}?${params.map(([key, val]) => `${key}=${val}`).join("&")}`
+  return `${url}?${params.map(([key, val]) => `${key}=${val}`).join('&')}`
 }
 
-const generateDownloadLink = (thumbnail_url = "") => {
+const generateDownloadLink = (thumbnail_url = '') => {
   const match = thumbnail_url.match(/(?:\.tv\/)(.+)(?:-preview)/)
   return match ? `https://clips-media-assets2.twitch.tv/${match[1]}.mp4` : null
 }
@@ -29,6 +32,7 @@ const Select = ({ onSubmit }) => (
         Enter a Twitch username to load clips
       </legend>
       <div className="cf">
+        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label className="clip" htmlFor="username">
           Username
         </label>
@@ -50,35 +54,65 @@ const Select = ({ onSubmit }) => (
   </form>
 )
 
-const Clips = ({ data = [] }) =>
+Select.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+}
+
+const Clips = ({ data }) =>
   data.length ? (
     <section className="cf w-100 flex flex-wrap">
-      {data.map(({ url, title, thumbnail_url, creator_name, view_count }) => (
-        <article key={url} className="w-100 w-50-m  w-25-ns">
-          <a
-            href={generateDownloadLink(thumbnail_url)}
-            className="link db ma2-ns"
-            target="_blank"
-          >
-            <div className="aspect-ratio aspect-ratio--16x9">
-              <img
-                style={{
-                  backgroundImage: `url(${thumbnail_url})`,
-                }}
-                className="db bg-center cover aspect-ratio--object"
-              />
-            </div>
-            <h3 className="f5 f4-ns mb0 black-90">{title}</h3>
-            <h3 className="f6 f5 fw4 mt2 black-60">
-              by {creator_name} ({view_count} views)
-            </h3>
-          </a>
-        </article>
-      ))}
+      {data.map(
+        ({
+          url,
+          title,
+          thumbnail_url: thumbnailUrl,
+          creator_name: creatorName,
+          view_count: viewCount,
+        }) => (
+          <article key={url} className="w-100 w-50-m  w-25-ns">
+            <a
+              href={generateDownloadLink(thumbnailUrl)}
+              className="link db ma2-ns"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <div className="aspect-ratio aspect-ratio--16x9">
+                <img
+                  alt=""
+                  style={{
+                    backgroundImage: `url(${thumbnailUrl})`,
+                  }}
+                  className="db bg-center cover aspect-ratio--object"
+                />
+              </div>
+              <h3 className="f5 f4-ns mb0 black-90">{title}</h3>
+              <h3 className="f6 f5 fw4 mt2 black-60">
+                by {creatorName} ({viewCount} views)
+              </h3>
+            </a>
+          </article>
+        )
+      )}
     </section>
   ) : (
     <p>No clips found for this user</p>
   )
+
+Clips.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      url: PropTypes.string,
+      title: PropTypes.string,
+      thumbnail_url: PropTypes.string,
+      creator_name: PropTypes.string,
+      view_count: PropTypes.string,
+    })
+  ),
+}
+
+Clips.defaultProps = {
+  data: [],
+}
 
 const NextButton = ({ onClick }) => (
   <nav className="tc w-100">
@@ -92,26 +126,30 @@ const NextButton = ({ onClick }) => (
   </nav>
 )
 
-export default () => {
-  const [token, setToken] = useState("")
-  const [username, setUsername] = useState("")
+NextButton.propTypes = {
+  onClick: PropTypes.func.isRequired,
+}
+
+const Index = () => {
+  const [token, setToken] = useState('')
+  const [username, setUsername] = useState('')
   const [page, setPage] = useState(null)
   const [cursor, setCursor] = useState(null)
   const [data, setData] = useState(null)
 
   useEffect(() => {
     // Parses #access_token= from url
-    const { access_token } = Object.fromEntries(
+    const { access_token: accessToken } = Object.fromEntries(
       window.location.hash
         .substr(1)
-        .split("&")
-        .map((pair) => pair.split("="))
+        .split('&')
+        .map((pair) => pair.split('='))
     )
 
     // Remove hash after reading value
-    history.pushState("", document.title, window.location.pathname)
+    window.history.pushState('', document.title, window.location.pathname)
 
-    setToken(access_token)
+    setToken(accessToken)
   }, [setToken])
 
   useEffect(() => {
@@ -123,7 +161,7 @@ export default () => {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Client-ID": process.env.NEXT_PUBLIC_CLIPS_TWITCH_CLIENT_ID,
+            'Client-ID': process.env.NEXT_PUBLIC_CLIPS_TWITCH_CLIENT_ID,
           },
         }
       )
@@ -141,7 +179,7 @@ export default () => {
       res = await fetch(endpoint, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Client-ID": process.env.NEXT_PUBLIC_CLIPS_TWITCH_CLIENT_ID,
+          'Client-ID': process.env.NEXT_PUBLIC_CLIPS_TWITCH_CLIENT_ID,
         },
       })
       const clips = await res.json()
@@ -156,14 +194,16 @@ export default () => {
       request()
     }
 
-    return () => (cancelled = true)
+    return () => {
+      cancelled = true
+    }
   }, [token, username, page])
 
   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault()
       setPage(null)
-      setUsername(new FormData(event.target).get("username"))
+      setUsername(new FormData(event.target).get('username'))
     },
     [setUsername]
   )
@@ -176,3 +216,5 @@ export default () => {
     </main>
   )
 }
+
+export default Index
