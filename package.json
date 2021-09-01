@@ -12,7 +12,7 @@
     "jsonwebtoken": "^8.5.1",
     "jwk-to-pem": "^2.0.4",
     "nanoid": "^3.1.22",
-    "next": "^10.0.9",
+    "next": "^11.1.1",
     "node-fetch": "^2.6.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
