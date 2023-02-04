@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 
-const Dashboard = () => {
+function Dashboard() {
   const [overlays, setOverlays] = useState([])
   const [errors, setErrors] = useState([])
 

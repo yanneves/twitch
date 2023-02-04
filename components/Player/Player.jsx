@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import ReactAudioPlayer from 'react-audio-player'
 
-const Player = ({ sound, onEnded }) => {
+function Player({ sound, onEnded }) {
   const [volume, setVolume] = useState(1)
 
   useEffect(() => {

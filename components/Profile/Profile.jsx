@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
-const Profile = ({ data }) => {
+function Profile({ data }) {
   const [picture, setPicture] = useState(null)
   const [errors, setErrors] = useState([])
 

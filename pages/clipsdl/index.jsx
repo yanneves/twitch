@@ -15,51 +15,55 @@ const generateAuthEndpoint = () => {
   return `${url}?${params.map(([key, val]) => `${key}=${val}`).join('&')}`
 }
 
-const generateDownloadLink = (thumbnail_url = '') => {
-  const match = thumbnail_url.match(/(?:\.tv\/)(.+)(?:-preview)/)
+const generateDownloadLink = (thumbnailUrl = '') => {
+  const match = thumbnailUrl.match(/(?:\.tv\/)(.+)(?:-preview)/)
   return match ? `https://clips-media-assets2.twitch.tv/${match[1]}.mp4` : null
 }
 
-const Login = () => <a href={generateAuthEndpoint()}>Log in with Twitch</a>
+function Login() {
+  return <a href={generateAuthEndpoint()}>Log in with Twitch</a>
+}
 
-const Select = ({ onSubmit }) => (
-  <form
-    className="bg-light-red mw7 center pa4 br2-ns ba b--black-10"
-    onSubmit={onSubmit}
-  >
-    <fieldset className="cf bn ma0 pa0">
-      <legend className="pa0 f5 f4-ns mb3 black-80">
-        Enter a Twitch username to load clips
-      </legend>
-      <div className="cf">
-        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-        <label className="clip" htmlFor="username">
-          Username
-        </label>
-        <input
-          className="f6 f5-l input-reset bn fl black-80 bg-white pa3 lh-solid w-100 w-75-m w-80-l br2-ns br--left-ns"
-          placeholder="Twitch Username"
-          type="text"
-          name="username"
-          id="username"
-        />
-        <button
-          className="f6 f5-l button-reset fl pv3 tc bn bg-animate bg-black-70 hover-bg-black white pointer w-100 w-25-m w-20-l br2-ns br--right-ns"
-          type="submit"
-        >
-          Subscribe
-        </button>
-      </div>
-    </fieldset>
-  </form>
-)
+function Select({ onSubmit }) {
+  return (
+    <form
+      className="bg-light-red mw7 center pa4 br2-ns ba b--black-10"
+      onSubmit={onSubmit}
+    >
+      <fieldset className="cf bn ma0 pa0">
+        <legend className="pa0 f5 f4-ns mb3 black-80">
+          Enter a Twitch username to load clips
+        </legend>
+        <div className="cf">
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+          <label className="clip" htmlFor="username">
+            Username
+          </label>
+          <input
+            className="f6 f5-l input-reset bn fl black-80 bg-white pa3 lh-solid w-100 w-75-m w-80-l br2-ns br--left-ns"
+            placeholder="Twitch Username"
+            type="text"
+            name="username"
+            id="username"
+          />
+          <button
+            className="f6 f5-l button-reset fl pv3 tc bn bg-animate bg-black-70 hover-bg-black white pointer w-100 w-25-m w-20-l br2-ns br--right-ns"
+            type="submit"
+          >
+            Subscribe
+          </button>
+        </div>
+      </fieldset>
+    </form>
+  )
+}
 
 Select.propTypes = {
   onSubmit: PropTypes.func.isRequired,
 }
 
-const Clips = ({ data }) =>
-  data.length ? (
+function Clips({ data }) {
+  return data.length ? (
     <section className="cf w-100 flex flex-wrap">
       {data.map(
         ({
@@ -97,6 +101,7 @@ const Clips = ({ data }) =>
   ) : (
     <p>No clips found for this user</p>
   )
+}
 
 Clips.propTypes = {
   data: PropTypes.arrayOf(
@@ -114,23 +119,25 @@ Clips.defaultProps = {
   data: [],
 }
 
-const NextButton = ({ onClick }) => (
-  <nav className="tc w-100">
-    <button
-      type="button"
-      className="f5 black bg-white bg-animate hover-bg-black hover-white pa3 ba bw1 b--black border-box pointer"
-      onClick={onClick}
-    >
-      Load next
-    </button>
-  </nav>
-)
+function NextButton({ onClick }) {
+  return (
+    <nav className="tc w-100">
+      <button
+        type="button"
+        className="f5 black bg-white bg-animate hover-bg-black hover-white pa3 ba bw1 b--black border-box pointer"
+        onClick={onClick}
+      >
+        Load next
+      </button>
+    </nav>
+  )
+}
 
 NextButton.propTypes = {
   onClick: PropTypes.func.isRequired,
 }
 
-const Index = () => {
+function Index() {
   const [token, setToken] = useState('')
   const [username, setUsername] = useState('')
   const [page, setPage] = useState(null)

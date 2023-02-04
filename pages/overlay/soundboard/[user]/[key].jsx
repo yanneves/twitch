@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import Redemptions from '../../../../components/Redemptions'
 import Player from '../../../../components/Player'
 
-const Overlay = () => {
+function Overlay() {
   const [errors, setErrors] = useState([])
   const [auth, setAuth] = useState(null)
   const [sound, setSound] = useState(null)
@@ -27,19 +27,15 @@ const Overlay = () => {
         )
         overlay = await fetchOverlay.json()
 
-        const fetchChannel = await fetch(
-          'https://api.twitch.tv/kraken/channel',
-          {
-            headers: {
-              'Client-ID': process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID,
-              Accept: 'application/vnd.twitchtv.v5+json',
-              Authorization: `OAuth ${overlay?.data.twitch.access_token}`,
-            },
-          }
-        )
-        const channelData = await fetchChannel.json()
-        // eslint-disable-next-line no-underscore-dangle
-        channel = channelData?._id
+        const fetchUser = await fetch('https://api.twitch.tv/helix/users', {
+          headers: {
+            'Client-ID': process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID,
+            Authorization: `Bearer ${overlay?.data.twitch.access_token}`,
+          },
+        })
+
+        const { data } = await fetchUser.json()
+        channel = data[0]?.id
       } catch {
         return setErrors((state) => [...state, 'Failed to fetch overlay data'])
       }
